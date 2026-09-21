@@ -2,7 +2,7 @@
 
 A full-stack Todo List app built with the MERN stack, featuring authentication and Todo CRUD operations.
 
-###🚀 Features
+### 🚀 Features
 
 - User signup, login, and logout
 - JWT authentication with cookies and localStorage
@@ -12,7 +12,7 @@ A full-stack Todo List app built with the MERN stack, featuring authentication a
 - React + Vite frontend
 - Node.js + Express + MongoDB backend
 
-###🛠️ Tech Stack
+### 🛠️ Tech Stack
 
 - React 19
 - Vite
@@ -25,7 +25,7 @@ A full-stack Todo List app built with the MERN stack, featuring authentication a
 - bcryptjs
 - CSS
 
-###📂 Project Structure
+### 📂 Project Structure
 ```
 MERN-stack-Todo-List-main/
 ├── backend/
@@ -44,7 +44,7 @@ MERN-stack-Todo-List-main/
 │       └── main.jsx
 └── README.md
 ```
-###🧭 Frontend Routes
+### 🧭 Frontend Routes
 ```
 Route| Access
 "/"| Protected
@@ -53,7 +53,7 @@ Route| Access
 "/signup"| Public
 "/login"| Public
 ```
-###🌐 API Endpoints
+### 🌐 API Endpoints
 
 Authentication
 ```
@@ -73,7 +73,7 @@ DELETE /api/todos/delete-multiple
 ```
 
 
-###⚙️ Setup
+### ⚙️ Setup
 
 Backend
 
@@ -103,7 +103,7 @@ Frontend URL:
 ```
 http://localhost:5173
 ```
-###🔮 Future Improvements
+### 🔮 Future Improvements
 
 - Secure Todo APIs with JWT middleware
 - Add user-specific Todos
@@ -112,7 +112,7 @@ http://localhost:5173
 - Add pagination
 - Deploy the application
 
-###👨‍💻 Author
+### 👨‍💻 Author
 
 Mohad Kaif
 ```
