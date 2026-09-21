@@ -1,8 +1,8 @@
-📝 MERN Stack Todo List
+## 📝 MERN Stack Todo List
 
 A full-stack Todo List app built with the MERN stack, featuring authentication and Todo CRUD operations.
 
-🚀 Features
+###🚀 Features
 
 - User signup, login, and logout
 - JWT authentication with cookies and localStorage
@@ -12,7 +12,7 @@ A full-stack Todo List app built with the MERN stack, featuring authentication a
 - React + Vite frontend
 - Node.js + Express + MongoDB backend
 
-🛠️ Tech Stack
+###🛠️ Tech Stack
 
 - React 19
 - Vite
@@ -25,8 +25,8 @@ A full-stack Todo List app built with the MERN stack, featuring authentication a
 - bcryptjs
 - CSS
 
-📂 Project Structure
-
+###📂 Project Structure
+```
 MERN-stack-Todo-List-main/
 ├── backend/
 │   ├── db/
@@ -43,37 +43,37 @@ MERN-stack-Todo-List-main/
 │       ├── App.jsx
 │       └── main.jsx
 └── README.md
-
-🧭 Frontend Routes
-
+```
+###🧭 Frontend Routes
+```
 Route| Access
 "/"| Protected
 "/add"| Protected
 "/update/:id"| Protected
 "/signup"| Public
 "/login"| Public
-
-🌐 API Endpoints
+```
+###🌐 API Endpoints
 
 Authentication
-
+```
 POST /api/users/signup
 POST /api/users/login
 POST /api/users/logout
 GET  /api/users/profile
-
+```
 Todos
-
+```
 POST   /api/todos/add-task
 GET    /api/todos/task
 GET    /api/todos/task/:id
 PUT    /api/todos/update-task/:id
 DELETE /api/todos/delete/:id
 DELETE /api/todos/delete-multiple
+```
 
 
-
-⚙️ Setup
+###⚙️ Setup
 
 Backend
 
@@ -81,18 +81,18 @@ cd backend
 npm install
 
 Create "backend/.env":
-
+```
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
-
+```
 Start the server:
 
 npm run server
 
 Backend URL:
-
+```
 http://localhost:3000
-
+```
 Frontend
 
 cd frontend
@@ -100,10 +100,10 @@ npm install
 npm run dev
 
 Frontend URL:
-
+```
 http://localhost:5173
-
-🔮 Future Improvements
+```
+###🔮 Future Improvements
 
 - Secure Todo APIs with JWT middleware
 - Add user-specific Todos
@@ -112,13 +112,14 @@ http://localhost:5173
 - Add pagination
 - Deploy the application
 
-👨‍💻 Author
+###👨‍💻 Author
 
 Mohad Kaif
-
+```
 GitHub:
 https://github.com/mohadkaif122344
-
+```
+```
 Repository:
 https://github.com/mohadkaif122344/MERN-stack-Todo-List
-
+```
