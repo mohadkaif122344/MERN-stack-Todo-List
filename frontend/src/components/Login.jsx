@@ -1,67 +1,74 @@
-import { useEffect, useState } from 'react'
-import '../style/AddTask.css'
-import { Link, useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
+  const { API, setUser} = useContext(AuthContext);
 
-    const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState({
     email: "",
     password: "",
-  })
+  });
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-
-    useEffect(()=>{
-        if (localStorage.getItem('token')) {
-            navigate('/',{replace: true})
-        }
-    },[navigate])
-
-    const handlelogin= async ()=>{
+  const handlelogin = async () => {
     try {
-        console.log(userData);
-    let result = await fetch('http://localhost:3000/api/users/login',{
-        method: 'POST',
-        body:JSON.stringify(userData),
-        headers:{'Content-Type':'application/json'}
-    })
-    result = await result.json()
-    if (result.success) {
-        
-        localStorage.setItem('token',result.token)
-        navigate("/",{ replace: true })
-        toast.success("login successfully")
-    }
+      const { data } = await axios.post(`${API}/api/users/login`, userData);
+      if (data) {
+        localStorage.setItem("token", data.token);
+          setUser(data.user);
+        navigate("/");
+        toast.success(data.message);
+      }
     } catch (error) {
-       toast.error("Server error") 
+      toast.error(error.message);
     }
-}
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   return (
+    <div className="container">
+      <h1>Login</h1>
 
-    <div className='container'>
-        <h1>Login</h1>
-
-        <label htmlFor="">Email</label>
-        <input
-        onChange={(event)=>setUserData({...userData, email:event.target.value})}
-        type="email" name='email' placeholder='Enter user email' required/>
-
-        <label htmlFor="">Password</label>
-        <input
-        onChange={(event)=>setUserData({...userData, password:event.target.value})}
-        type="password" name='password' placeholder='Enter user password' required/>
-
-        <button onClick={handlelogin} className='submit'>Login</button>
-         <p className="auth-text">
+      <label htmlFor="">Email</label>
+      <input
+        onChange={(event) =>
+          setUserData({ ...userData, email: event.target.value })
+        }
+        type="email"
+        name="email"
+        placeholder="Enter user email"
+        required
+      />
+      <label htmlFor="">Password</label>
+      <input
+        onChange={(event) =>
+          setUserData({ ...userData, password: event.target.value })
+        }
+        type="password"
+        name="password"
+        placeholder="Enter user password"
+        required
+      />
+      <button onClick={handlelogin} className="submit">
+        Login
+      </button>
+      <p className="auth-text">
         Don’t have an account?{" "}
-        <Link to="/signup" className='link'>
+        <Link to="/signup" className="link">
           Sign up
         </Link>
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

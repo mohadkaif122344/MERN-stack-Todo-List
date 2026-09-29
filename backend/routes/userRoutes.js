@@ -1,56 +1,60 @@
 import express from "express";
 import Users from "../models/user.js";
 import bcrypt from "bcryptjs";
-
 import jwt from "jsonwebtoken";
 import authMiddleware from "../middleware/auth.js";
 
 export const router = express.Router();
 
-// user signup
+// User Signup
 router.post("/signup", async (req, res) => {
   try {
-    console.log(req.body);
     const { fullName, email, password } = req.body;
-
     const userExist = await Users.findOne({ email });
     if (userExist) {
-      return res.json({ success: false, message: "User already exist" });
+      return res.json({
+        success: false,
+        message: "User already exist",
+      });
     }
-const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await Users.create({
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await Users.create({
       fullName,
       email,
       password: hashedPassword,
     });
-    res.json({ success: true, message: "signup successfully",
-         user: {
-    id: user._id,
-    fullName: user.fullName,
-    email: user.email,
-  },});
+
+    res.json({
+      success: true,
+      message: "Signup successfully",
+    });
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    res.json({
+      success: false,
+      message: error.message,
+    });
   }
 });
 
-//user login
+// User Login
 router.post("/login", async (req, res) => {
   try {
-    console.log(req.body);
     const { email, password } = req.body;
     const userExist = await Users.findOne({ email });
     if (!userExist) {
-      return res.json({ success: false, message: "Invalid credentials" });
+      return res.json({
+        success: false,
+        message: "Invalid credentials",
+      });
     }
-    const isMatch = await bcrypt.compare(password, userExist.password)
+    const isMatch = await bcrypt.compare(password, userExist.password);
     if (!isMatch) {
       return res.json({
         success: false,
         message: "Invalid credentials",
       });
     }
-    //JWT token
+
     const token = jwt.sign(
       {
         id: userExist._id,
@@ -61,34 +65,34 @@ router.post("/login", async (req, res) => {
         expiresIn: "7d",
       },
     );
-    //save token in cookie
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
     });
-
     res.json({
       success: true,
       message: "Login successfully",
-      token: token,
-      user: {
-        id: userExist._id,
-        fullName: userExist.fullName,
-        email: userExist.email,
-      },
+      token,
     });
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    res.json({
+      success: false,
+      message: error.message,
+    });
   }
 });
 
-//user logout
+// User Logout
 router.post("/logout", (_, res) => {
   res.clearCookie("token");
-  res.json({ success: true, message: "Logout successfully" });
+  res.json({
+    success: true,
+    message: "Logout successfully",
+  });
 });
 
-//PROTECTED PROFILE ROUTE
+// Protected Profile Route
 router.get("/profile", authMiddleware, (req, res) => {
   res.json({
     success: true,

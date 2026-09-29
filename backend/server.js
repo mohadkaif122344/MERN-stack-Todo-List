@@ -7,15 +7,16 @@ import { router as todoRoutes } from "./routes/todoRoutes.js";
 import { router as userRoutes } from "./routes/userRoutes.js";
 
 const app = express();
-app.use(cors({
-    origin: "http://localhost:5173", 
+app.use(
+  cors({
+    origin:  process.env.FRONTEND_URL,
     credentials: true,
-  }));
+  }),
+);
 const port = 3000;
 app.use(express.json());
 app.use(cookieParser());
 
-// database connection
 connectDB();
 
 app.get("/", (_, res) => res.send("Live server"));
