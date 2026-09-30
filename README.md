@@ -1,5 +1,9 @@
 # 📝 MERN Stack Todo List
 
+A full-stack **Todo List application** built with the MERN stack.  
+The application includes user authentication and complete Todo CRUD functionality with a responsive interface.
+
+
 ## LIVE LINK: | https://mern-stack-todo-list-psi.vercel.app |
 
 <img width="1913" height="840" alt="Screenshot 2026-09-30 145323" src="https://github.com/user-attachments/assets/2edf9dcf-f7f4-4952-bd37-cf8ffff73544" />
@@ -9,8 +13,6 @@
 <img width="1901" height="827" alt="Screenshot 2026-09-30 150701" src="https://github.com/user-attachments/assets/69e720e0-b891-4ec3-ba0b-99a7d75eb09f" />
 
 
-A full-stack **Todo List application** built with the MERN stack.  
-The application includes user authentication and complete Todo CRUD functionality with a responsive interface.
 
 ## 🚀 Features
 
