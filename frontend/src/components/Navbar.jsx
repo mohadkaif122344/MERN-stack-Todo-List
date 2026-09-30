@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import '../style/navbar.css';
+import '../style/Navbar.css';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useContext } from 'react';
