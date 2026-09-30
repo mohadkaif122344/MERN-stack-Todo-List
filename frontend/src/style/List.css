@@ -14,7 +14,15 @@
 .title {
     margin-top: 80px;
 }
+.email {
+  color: rgb(1, 92, 92);
+  transition: 0.2s;
+}
 
+.email:hover {
+  text-decoration: underline;
+  font-weight: bold;
+}
 .list-header {
     padding: 15px;
     background-color: #c6d4e1;

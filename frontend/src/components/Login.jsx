@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
-  const { API, setUser} = useContext(AuthContext);
+  const { API, setUser } = useContext(AuthContext);
 
   const [userData, setUserData] = useState({
     email: "",
@@ -15,44 +14,55 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handlelogin = async () => {
+    if (!userData.email || !userData.password) {
+      toast.error("Please enter email and password");
+      return;
+    }
     try {
-      const { data } = await axios.post(`${API}/api/users/login`, userData);
-      if (data) {
-        localStorage.setItem("token", data.token);
-          setUser(data.user);
-        navigate("/");
+      const { data } = await axios.post(`${API}/api/users/login`, userData, {
+        withCredentials: true,
+      });
+
+      if (data.success) {
+        setUser(data.user);
         toast.success(data.message);
+        navigate("/");
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.message);
     }
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/");
-    }
-  }, [navigate]);
-
   return (
     <div className="container">
       <h1>Login</h1>
-
-      <label htmlFor="">Email</label>
+      <label htmlFor="email">Email</label>
       <input
+        id="email"
         onChange={(event) =>
-          setUserData({ ...userData, email: event.target.value })
+          setUserData({
+            ...userData,
+            email: event.target.value,
+          })
         }
+        value={userData.email}
         type="email"
         name="email"
         placeholder="Enter user email"
         required
       />
-      <label htmlFor="">Password</label>
+      <label htmlFor="password">Password</label>
       <input
+        id="password"
         onChange={(event) =>
-          setUserData({ ...userData, password: event.target.value })
+          setUserData({
+            ...userData,
+            password: event.target.value,
+          })
         }
+        value={userData.password}
         type="password"
         name="password"
         placeholder="Enter user password"
@@ -70,5 +80,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;

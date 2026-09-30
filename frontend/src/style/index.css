@@ -4,6 +4,6 @@ body {
     background-color: rgb(158, 154, 154);
 }
 
-*::-webkit-scrollbar {
-    display: none;
+::-webkit-scrollbar{
+    display:none
 }

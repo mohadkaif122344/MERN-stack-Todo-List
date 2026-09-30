@@ -15,6 +15,11 @@ const todoSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+     user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+      required: true,
+    },
   },
   { timestamps: true },
 );

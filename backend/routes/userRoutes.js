@@ -6,13 +6,18 @@ import authMiddleware from "../middleware/auth.js";
 
 export const router = express.Router();
 
-// User Signup
 router.post("/signup", async (req, res) => {
   try {
     const { fullName, email, password } = req.body;
+    if (!fullName || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
     const userExist = await Users.findOne({ email });
     if (userExist) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: "User already exist",
       });
@@ -23,38 +28,41 @@ router.post("/signup", async (req, res) => {
       email,
       password: hashedPassword,
     });
-
-    res.json({
+    res.status(201).json({
       success: true,
       message: "Signup successfully",
     });
   } catch (error) {
-    res.json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 });
 
-// User Login
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required",
+      });
+    }
     const userExist = await Users.findOne({ email });
     if (!userExist) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Invalid credentials",
       });
     }
     const isMatch = await bcrypt.compare(password, userExist.password);
     if (!isMatch) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Invalid credentials",
       });
     }
-
     const token = jwt.sign(
       {
         id: userExist._id,
@@ -65,37 +73,60 @@ router.post("/login", async (req, res) => {
         expiresIn: "7d",
       },
     );
-
+    const user = {
+      _id: userExist._id,
+      fullName: userExist.fullName,
+      email: userExist.email,
+    };
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
+
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     res.json({
       success: true,
       message: "Login successfully",
-      token,
+      user,
     });
   } catch (error) {
-    res.json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 });
 
-// User Logout
-router.post("/logout", (_, res) => {
-  res.clearCookie("token");
+router.post("/logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+  });
   res.json({
     success: true,
     message: "Logout successfully",
   });
 });
 
-// Protected Profile Route
-router.get("/profile", authMiddleware, (req, res) => {
-  res.json({
-    success: true,
-    user: req.user,
-  });
+router.get("/profile", authMiddleware, async (req, res) => {
+  try {
+    const user = await Users.findById(req.user._id).select("-password");
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    res.json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });

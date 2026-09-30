@@ -13,30 +13,42 @@ const App = () => {
   return (
     <div>
       <Toaster />
-      <Navbar />
       <Routes>
         <Route
           path="/"
           element={
             <Protected>
+              <Navbar />
               <List />
             </Protected>
           }
         />
+
         <Route
           path="/add"
           element={
             <Protected>
+              <Navbar />
               <AddTask />
             </Protected>
           }
         />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
+
+        <Route
+          path="/signup"
+          element={<SignUp />}
+        />
+
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
         <Route
           path="/update/:id"
           element={
             <Protected>
+              <Navbar />
               <UpdateTask />
             </Protected>
           }

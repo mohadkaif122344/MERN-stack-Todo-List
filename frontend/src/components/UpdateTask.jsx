@@ -1,82 +1,115 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import "../style/AddTask.css";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 
 const UpdateTask = () => {
-  const { API } = useContext(AuthContext);
-
+  const { API, user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [taskData, setTaskData] = useState({
     title: "",
     description: "",
   });
+
   const navigate = useNavigate();
   const { id } = useParams();
-
   useEffect(() => {
     getTask(id);
-  }, []);
+  }, [id]);
 
   const getTask = async (id) => {
     try {
-      const { data } = await axios.get(`${API}/api/todos/task/${id}`);
-      if (data) {
+      setLoading(true);
+      const { data } = await axios.get(`${API}/api/todos/task/${id}`, {
+        withCredentials: true,
+      });
+      if (data.success) {
         setTaskData({
           title: data.data?.title || "",
           description: data.data?.description || "",
         });
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.messsage);
+    } finally {
+      setLoading(false);
     }
   };
 
   const updateTask = async (id) => {
+    if (!taskData.title || !taskData.description) {
+      toast.error("Please fill all fields");
+      return;
+    }
     try {
+      setUpdateLoading(true);
       const { data } = await axios.put(
         `${API}/api/todos/update-task/${id}`,
         taskData,
+        {
+          withCredentials: true,
+        },
       );
-      if (data) {
-        navigate("/");
+      if (data.success) {
         toast.success(data.message);
+        navigate("/");
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setUpdateLoading(false);
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="container">
-      <h1>Update Task</h1>
-      <label htmlFor="">Title</label>
+      <h1>Update Task <span className="username">
+        {user?.fullName}</span></h1>
+      <label htmlFor="title">Title</label>
       <input
-        value={taskData?.title}
+        id="title"
+        value={taskData.title}
         onChange={(event) =>
-          setTaskData({ ...taskData, title: event.target.value })
+          setTaskData({
+            ...taskData,
+            title: event.target.value,
+          })
         }
         type="text"
         name="title"
         placeholder="Enter Task title"
       />
-      <label htmlFor="">Description</label>
+      <label htmlFor="description">Description</label>
       <textarea
-        value={taskData?.description}
+        id="description"
+        value={taskData.description}
         onChange={(event) =>
-          setTaskData({ ...taskData, description: event.target.value })
+          setTaskData({
+            ...taskData,
+            description: event.target.value,
+          })
         }
         name="description"
-        id=""
         placeholder="Enter Task Description"
-      ></textarea>
-      <button onClick={() => updateTask(id)} className="submit">
-        Update Task
+      />
+      <button
+        onClick={() => updateTask(id)}
+        className="submit"
+        disabled={updateLoading}
+      >
+        {updateLoading ? "Updating..." : "Update Task"}
       </button>
     </div>
   );
 };
-
 export default UpdateTask;
