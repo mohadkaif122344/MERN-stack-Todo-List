@@ -1,6 +1,7 @@
 # 📝 MERN Stack Todo List
 
-##  LIVE LINK : | mern-stack-todo-list-61x9z9itw-mohadkaif122344s-projects.vercel.app |
+## LIVE LINK:
+https://mern-stack-todo-list-61x9z9itw-mohadkaif122344s-projects.vercel.app
 
 
 <img width="1912" height="832" alt="Screenshot 2026-09-29 225804" src="https://github.com/user-attachments/assets/27e67647-84d1-4742-bef4-958a5d7a6f6d" />
